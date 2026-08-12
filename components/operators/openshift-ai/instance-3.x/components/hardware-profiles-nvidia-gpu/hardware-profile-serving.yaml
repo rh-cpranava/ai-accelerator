@@ -21,12 +21,12 @@ spec:
       resourceType: Memory
       defaultCount: 8Gi
       minCount: 2Gi
-      maxCount: 120Gi
+      maxCount: 1024Gi
     - identifier: nvidia.com/gpu
       displayName: nvidia.com/gpu
-      defaultCount: 1
+      defaultCount: 4
       minCount: 1
-      maxCount: 8
+      maxCount: 4
   scheduling:
     node:
       tolerations:

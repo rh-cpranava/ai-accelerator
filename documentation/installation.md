@@ -12,14 +12,6 @@ This document contains the steps for installing and configuring Red Hat OpenShif
 
 - Functional storage provisioner available with a default StorageClass.
 
-> [!Note]  
-> If using GPUs (not required): This repo is designed and tested to work with AWS for provisioning additional GPU nodes. 
-> 
-> Can still act as an example to deploy GPU resources in any cloud environment or a self-hosted cluster with some minor modifications.
-
-> [!Tip]  
-> Red Hat employees can request a demo cluster using [demo.redhat.com](https://demo.redhat.com) to provision OpenShift AI. For more information see the [Red Hat Demo Environment](redhat_demo_environment.md) documentation.
-
 ### Client Tooling
 
 The following are required for the bootstrap scripts. If unavailable the scripts will attempt to download required tools and store them at `.\tmp`:
