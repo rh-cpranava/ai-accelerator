@@ -16,6 +16,7 @@ Once the initial components are deployed, several ArgoCD Application objects are
 ### Operators
 
 * [Authorino Operator](components/operators/authorino-operator/)
+* [cert-manager Operator](components/operators/cert-manager/)
 * [NVIDIA GPU Operator](components/operators/gpu-operator-certified/)
 * [Node Feature Discovery Operator](components/operators/nfd/)
 * [OpenShift AI](components/operators/openshift-ai/)

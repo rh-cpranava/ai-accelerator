@@ -19,6 +19,11 @@ spec:
       - cluster: local
         url: https://kubernetes.default.svc
         values:
+          name: cert-manager-operator
+          path: components/operators/cert-manager/aggregate/overlays/default
+      - cluster: local
+        url: https://kubernetes.default.svc
+        values:
           name: connectivity-link-operator
           path: components/operators/redhat-connectivity-link/aggregate/overlays/auth
       - cluster: local
