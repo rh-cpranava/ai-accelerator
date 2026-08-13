@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - pvc-model-store-gemma.yaml
+  - servingruntime-gemma-4-31b.yaml
+  - inferenceservice-gemma-4-31b.yaml

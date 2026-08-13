@@ -1,0 +1,73 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    modelFormat: vLLM
+    opendatahub.io/genai-use-case: chat
+    opendatahub.io/hardware-profile-name: nvidia-gpu-serving
+    opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    opendatahub.io/model-type: generative
+    openshift.io/description: ""
+    openshift.io/display-name: gemma-4-31B
+    security.opendatahub.io/enable-auth: "true"
+    serving.kserve.io/deploymentMode: Standard
+    serving.kserve.io/stop: "false"
+  labels:
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/genai-asset: "true"
+  name: gemma-4-31b
+spec:
+  predictor:
+    automountServiceAccountToken: false
+    deploymentStrategy:
+      type: Recreate
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      args:
+        - --tensor-parallel-size=2
+        - --max-model-len=32768
+        - --gpu-memory-utilization=0.90
+        - --enable-auto-tool-choice
+        - --reasoning-parser=gemma4
+        - --tool-call-parser=gemma4
+        - --limit-mm-per-prompt={"image":0,"audio":0}
+      env:
+        - name: HOME
+          value: /tmp
+        - name: USER
+          value: vllm
+        - name: XDG_CACHE_HOME
+          value: /tmp/.cache
+        - name: HUGGINGFACE_HUB_CACHE
+          value: /tmp/hf/hub
+        - name: TORCHINDUCTOR_CACHE_DIR
+          value: /tmp/torch
+        - name: VLLM_CACHE_ROOT
+          value: /tmp/vllm
+        - name: TRANSFORMERS_CACHE
+          value: /tmp/hf/transformers
+        - name: HF_HUB_OFFLINE
+          value: "1"
+      modelFormat:
+        name: vLLM
+      name: ""
+      resources:
+        limits:
+          cpu: "16"
+          memory: 100Gi
+          nvidia.com/gpu: "4"
+        requests:
+          cpu: "16"
+          memory: 100Gi
+          nvidia.com/gpu: "4"
+      runtime: gemma-4-31b
+      storageUri: pvc://model-store-gemma/hub/models--RedHatAI--gemma-4-31B-it-FP8-block/export
+    timeout: 300
+    tolerations:
+      - effect: NoSchedule
+        key: nvidia-gpu-only
+        operator: Exists
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
