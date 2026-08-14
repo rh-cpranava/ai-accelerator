@@ -21,3 +21,8 @@ spec:
         values:
           name: models-prod
           path: tenants/models/overlays/prod
+      - cluster: local
+        url: https://kubernetes.default.svc
+        values:
+          name: guidellm-staging
+          path: tenants/guidellm/overlays/staging

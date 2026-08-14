@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: guidellm-benchmark
+spec:
+  schedule: "0 2 * * 1"
+  suspend: true
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+            - name: guidellm
+              image: ghcr.io/vllm-project/guidellm:v0.5.0
+              env:
+                - name: HOME
+                  value: /results
+              command: ["guidellm"]
+              args:
+                - "benchmark"
+                - "run"
+                - "--target"
+                - "https://gemma-4-31b-predictor.models-staging.svc.cluster.local"
+                - "--model"
+                - "gemma-4-31b"
+                - "--data"
+                - '{"prompt_tokens":256,"output_tokens":128}'
+                - "--rate-type"
+                - "sweep"
+                - "--max-seconds"
+                - "300"
+                - "--output-dir"
+                - "/results"
+                - "--outputs"
+                - "benchmark-results.json,benchmark-results.html"
+                - "--backend-kwargs"
+                - '{"verify": false}'
+              volumeMounts:
+                - name: results-volume
+                  mountPath: /results
+              resources:
+                requests:
+                  cpu: "2"
+                  memory: 4Gi
+                limits:
+                  cpu: "4"
+                  memory: 8Gi
+          volumes:
+            - name: results-volume
+              persistentVolumeClaim:
+                claimName: guidellm-results
+          restartPolicy: Never
